@@ -9,7 +9,18 @@ All files written in PlotLang have a file ending of `.pll`
 - Python 2.7 must be installed, a link to download can be found [here](https://www.python.org/downloads/release/python-2718/)
 
 ## Setup and Install
-run `py -2 setup.py install` to install PyMeta
+- run `py -2 setup.py install` within the terminal to install PyMeta
+- run `pip install numpy` in the terminal to install NumPy
+- run the following in the terminal to install matplotlib:
+```
+python -m pip install -U pip
+python -m pip install -U matplotlib
+```
+
+## To Run the Compiler
+- Within `plotLangBootstrap.py`, write the desired `.pll` file name as the first parameter in `open()`
+- Run `plotLangBootstrap.py` which generates executable Python code in `test_plotlang.py`
+- Run `test_plotlang.py` to generate a plot
 
 ## Language Features and Syntax
 ### Assignment Statement

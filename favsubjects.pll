@@ -1,0 +1,2 @@
+subjectdata := [["CS","Math","Econ","Chem","Poly Sci","Bio"]:[10,16,5,1,4,8]];
+BAR("Favorite Subjects","Subjects","People Who Rate as Favorite",subjectdata);

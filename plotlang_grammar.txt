@@ -1,0 +1,53 @@
+Program ::= <Statement>+:p => "import numpy as np\nfrom matplotlib import pyplot as plt\n\n"+sumStrings(p)
+
+Assn ::= <WS> <Identifier>:var <WS> ":""=" <WS> <Data>:d1 <WS> => str(var)+" = "+str(d1)
+
+PriExp ::= <Num>:n => (n)
+	  | <Identifier>:i => (i)
+	  | <String>:s => (s)
+
+Statement ::= <WS> <Assn>:s1 <Terminator> <WS> => str(s1)+"\n"
+	  | <WS> <GraphCall>:s1 <Terminator> <WS> => str(s1)+"\n"
+
+Range ::= <WS> "[" <WS> <Num>:start <WS> ".""." <WS> <Num>:end <WS> "]" <WS> => "[x for x in range("+str(start)+","+str(end)+"+1)]"
+	  | <WS> "[" <WS> <Num>:start <WS> ".""." <WS> <Num>:end <WS> "," <WS> <Num>:factor <WS> "]" <WS> => eval("[x for x in range("+str(start)+","+str(end)+"+1,"+str(factor)+")]")
+	  | <WS> "[" <WS> <Num>:start <WS> ".""." <WS> <Num>:end <WS> "," <WS> <String>:eqtn <WS> "]" <WS> => eval("[eval(\""+str(eqtn)+"\") for x in range("+str(start)+","+str(end)+"+1)]")
+
+Elem ::= <WS> <PriExp>:e1 <WS> <ListSep> <WS> => (e1)
+NumElem ::= <WS> <Num>:n1 <WS> <ListSep> <WS> => (n1)
+
+List ::= <WS> "[" <WS> <Elem>*:e1 <WS> <PriExp>:e2 <WS> "]" <WS> => (e1)+[e2]
+NumList ::= <WS> "[" <WS> <NumElem>*:e1 <WS> <Num>:n1 <WS> "]" <WS> => (e1)+[n1]
+
+Data ::= <WS> "[" (<List> | <Range>):xvals <WS> ":" <WS> (<NumList> | <Range>):yvals <WS> "]" <WS> => eval("[("+str(xvals)+"[i], "+str(yvals)+"[i]) for i in range(0, len("+str(xvals)+"))]")
+
+GraphCall ::= <WS> "B""A""R" <WS> "(" <WS> <String>:ttl <WS> "," <WS> <String>:xlbl <WS> "," <WS> <String>:ylbl <WS> "," <WS> (<Data> | <Identifier>):d1 <WS> ")" <WS> => "\nplt.bar(list(map(list, zip(*"+str(d1)+")))[0],list(map(list, zip(*"+str(d1)+")))[1])\n\nplt.xlabel(\""+xlbl+"\")\nplt.ylabel(\""+ylbl+"\")\nplt.title(\""+ttl+"\")\n\nplt.show()"
+	  | <WS> "L""I""N""E" <WS> "(" <WS> <String>:ttl <WS> "," <WS> <String>:xlbl <WS> "," <WS> <String>:ylbl <WS> "," <WS> (<Data> | <Identifier>):d1 <WS> ")" <WS> => "\nplt.plot(list(map(list, zip(*"+str(d1)+")))[0],list(map(list, zip(*"+str(d1)+")))[1])\n\nplt.xlabel(\""+xlbl+"\")\nplt.ylabel(\""+ylbl+"\")\nplt.title(\""+ttl+"\")\n\nplt.show()"
+	  | <WS> "L""I""N""E" <WS> "(" <WS> <String>:ttl <WS> "," <WS> <String>:xlbl <WS> "," <WS> <String>:ylbl <WS> "," <WS> (<Data> | <Identifier>):d1 <WS> "," <WS> (<Data> | <Identifier>):d2 <WS> ")" <WS> => "\nplt.plot(list(map(list, zip(*"+str(d1)+")))[0],list(map(list, zip(*"+str(d1)+")))[1])\nplt.plot(list(map(list, zip(*"+str(d2)+")))[0],list(map(list, zip(*"+str(d2)+")))[1])\n\nplt.xlabel(\""+xlbl+"\")\nplt.ylabel(\""+ylbl+"\")\nplt.title(\""+ttl+"\")\n\nplt.show()"
+	  | <WS> "S""C""A""T""T""E""R" <WS> "(" <WS> <String>:ttl <WS> "," <WS> <String>:xlbl <WS> "," <WS> <String>:ylbl <WS> "," <WS> (<Data> | <Identifier>):d1 <WS> ")" <WS> => "\nplt.scatter(list(map(list, zip(*"+str(d1)+")))[0],list(map(list, zip(*"+str(d1)+")))[1])\n\nplt.xlabel(\""+xlbl+"\")\nplt.ylabel(\""+ylbl+"\")\nplt.title(\""+ttl+"\")\n\nplt.show()"
+	  | <WS> "S""C""A""T""T""E""R" <WS> "(" <WS> <String>:ttl <WS> "," <WS> <String>:xlbl <WS> "," <WS> <String>:ylbl <WS> "," <WS> (<Data> | <Identifier>):d1 <WS> "," <WS> "T""R""U""E" <WS> ")" <WS> => "\nplt.scatter(list(map(list, zip(*"+str(d1)+")))[0],list(map(list, zip(*"+str(d1)+")))[1])\n\nplt.xlabel(\""+xlbl+"\")\nplt.ylabel(\""+ylbl+"\")\nplt.title(\""+ttl+"\")\n\nlinear_model=np.polyfit(list(map(list, zip(*"+str(d1)+")))[0],list(map(list, zip(*"+str(d1)+")))[1],1)\nlinear_model_fn=np.poly1d(linear_model)\nx_s=np.arange(min(list(map(list, zip(*"+str(d1)+")))[0]),max(list(map(list, zip(*"+str(d1)+")))[0]))\nplt.plot(x_s,linear_model_fn(x_s),color=\"green\")\n\nplt.show()"
+	  | <WS> "P""I""E" <WS> "(" <WS> <String>:ttl <WS> "," <WS> (<Data> | <Identifier>):d1 <WS> ")" <WS> => "\nplt.pie(list(map(list, zip(*"+str(d1)+")))[1],labels=list(map(list, zip(*"+str(d1)+")))[0],autopct='%1.1f%%')\n\nplt.title(\""+ttl+"\")\n\nplt.show()"
+
+Digit ::= ('0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9')
+Num ::= <Digit>+:d => int("".join(d))
+
+LAlpha ::= ('a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z')
+Identifier ::= <LAlpha>:first (<LAlpha> | <Digit>)*:remainder => first+"".join(remainder)
+String ::= <token '"'> (<escapedChar> | ~('"') <anything>)*:c '"' => "".join(c)
+Cmt ::= <token '!'> (~('!') <anything>)* '!'
+
+escapedChar ::= '\\' ('n' => '\n'
+                     |'r' => '\r'
+                     |'t' => '\t'
+                     |'b' => '\b'
+                     |'f' => '\f'
+                     |'"' => '"'
+                     |'\'' => '\''
+                     |'?' => '?'
+                     |'\\' => '\\' => "")
+
+WSChar ::= (' ' | '\n' | '\r' | '\t' | <Cmt>)
+WS ::= <WSChar>*
+
+Terminator ::= <WS> (";") <WS>
+ListSep ::= <WS> (",") <WS>

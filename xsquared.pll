@@ -1,0 +1,2 @@
+xsquaredgraph := [[1..10]:[1..10,"x*x"]];
+SCATTER("x^2 graph","x","y",xsquaredgraph);

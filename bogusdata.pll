@@ -1,0 +1,2 @@
+bogusdata := [[1..10,"x*2+7"]:[55,67,19,3,14,82,69,51,32,17]];
+SCATTER("bogusdata","x","y",bogusdata,TRUE);

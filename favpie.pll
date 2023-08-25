@@ -1,0 +1,2 @@
+favpie := [["Apple","Cream","Pumpkin","Peach","Cherry"]:[12,69,5,7,7]];
+PIE("Favorite Pie",favpie);

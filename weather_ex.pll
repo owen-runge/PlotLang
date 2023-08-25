@@ -1,0 +1,8 @@
+!This is an example of a double line graph plotting the high and low temps (in F) of Crawfordsville for each month!
+!Data: https://weatherspark.com/y/14785/Average-Weather-in-Crawfordsville-Indiana-United-States-Year-Round!
+!This creates a list of tuples of the highs with their respective months!
+highs := [["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]:[35,39,51,63,73,81,84,82,76,64,51,39]];
+!This creates a list of tuples of the lows with their respective months!
+lows := [["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]:[21,24,34,44,54,63,66,63,56,45,36,26]];
+!This is a call to create a graph, all calls are all caps and this one takes in two sets of data, hence the double line!
+LINE("High and Low Temperatures per Month","Month","Temperatures",lows,highs);

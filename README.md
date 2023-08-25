@@ -4,6 +4,8 @@ A language for easily and effectively creating plots.
 PlotLang makes use of PyMeta (a derivation of the OMeta language parser for Python 2.7) in order to create a language that takes in data and produces a corresponding plot.
 All files written in PlotLang have a file ending of `.pll`
 
+Developed with [Fardin Hoque](https://github.com/kfhfardin)
+
 ## Dependencies
 - PyMeta can be downloaded [here](https://launchpad.net/pymeta)
 - Python 2.7 must be installed, a link to download can be found [here](https://www.python.org/downloads/release/python-2718/)
